@@ -1,0 +1,24 @@
+.sidebar {
+  width: 150px;
+  height: 100vh;
+  overflow-y: scroll;
+  background-color: #f3f3f3;
+  padding: 10px;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.draggable-image {
+  cursor: grab;
+}
+
+.sidebar-image {
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+}

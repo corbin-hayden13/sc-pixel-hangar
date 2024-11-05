@@ -1,0 +1,21 @@
+[
+	{"name": "argo_csv", "filePath": "assets\\images\\argo_csv.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "selfland", "filePath": "assets\\images\\selfland.png", "rank": 2, "position": {"x": 0, "y": 0}, "isActive": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "hangar_floor1", "filePath": "assets\\images\\hangar_floor1.png", "rank": 1, "position": {"x": 0, "y": 0}, "isActive": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "argo_srv", "filePath": "assets\\images\\argo_srv.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "drake_vulture", "filePath": "assets\\images\\drake_vulture.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "anvil_terrapin", "filePath": "assets\\images\\anvil_terrapin.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "argo_mpuv", "filePath": "assets\\images\\argo_mpuv.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "drake_dragonfly", "filePath": "assets\\images\\drake_dragonfly.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "drake_mule", "filePath": "assets\\images\\drake_mule.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "greycat_ptv", "filePath": "assets\\images\\greycat_ptv.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "greycat_stv", "filePath": "assets\\images\\greycat_stv.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "mirai_pulse", "filePath": "assets\\images\\mirai_pulse.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "hover_trolley", "filePath": "assets\\images\\hover_trolley.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "cargo", "filePath": "assets\\images\\cargo.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "bennies", "filePath": "assets\\images\\bennies.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "people", "filePath": "assets\\images\\people.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "argo_atls", "filePath": "assets\\images\\argo_atls.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "drake_herald", "filePath": "assets\\images\\drake_herald.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "origin_100i", "filePath": "assets\\images\\origin_100i.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0}
+]

@@ -1,5 +1,23 @@
 .App {
   text-align: center;
+  display: flex;
+  height: 100vh;
+}
+
+.SideBar {
+  width: 200px; /* Adjust width as needed */
+  background-color: #f3f3f3;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+}
+
+.ImageCanvas {
+  flex: 1;
+  background-color: #ffffff;
+  border-left: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .App-logo {
