@@ -3,7 +3,7 @@ import "../css/SideBar.css"; // Styles for the sidebar and scroll container
 
 const SideBar = ({ images, onDragStart }) => {
   return (
-    <div className="sidebar">
+    <div className="SideBar">
       <div className="scroll-container">
         {images.map((image, index) => (
           <div

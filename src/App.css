@@ -1,23 +1,24 @@
 .App {
-  text-align: center;
   display: flex;
-  height: 100vh;
+  height: 100vh; /* Full viewport height */
+  overflow: hidden; /* Prevents overflow on small screens */
 }
 
 .SideBar {
-  width: 200px; /* Adjust width as needed */
+  width: 200px; /* Fixed width for the sidebar */
   background-color: #f3f3f3;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2);
   overflow-y: auto;
+  flex-shrink: 0; /* Prevents SideBar from shrinking */
 }
 
-.ImageCanvas {
-  flex: 1;
-  background-color: #ffffff;
-  border-left: 1px solid #ddd;
+.EditableArea {
+  flex: 1; /* Takes up remaining space */
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: #ffffff;
+  overflow-x: scroll;
 }
 
 .App-logo {

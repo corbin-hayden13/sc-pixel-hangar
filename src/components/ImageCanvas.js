@@ -6,7 +6,6 @@ const ImageCanvas = ({ images }) => {
 
     useEffect(() => {
         const canvas = new Canvas(canvasRef.current, { width: 1600, height: 900 });
-        // const sortedImages = [...images].sort((a, b) => a.rank - b.rank);
 
         Promise.all(
             images.map((imageObj) => {
@@ -37,8 +36,8 @@ const ImageCanvas = ({ images }) => {
     }, [images]);
 
     return (
-        <div>
-            <canvas ref={canvasRef} style={{ border: "1px solid black" }} />
+        <div className="ImageCanvas">
+            <canvas className="canvas" ref={canvasRef} style={{ border: "1px solid black" }} />
         </div>
     );
 }

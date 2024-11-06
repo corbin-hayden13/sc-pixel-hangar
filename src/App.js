@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import ImageCanvas from "./components/ImageCanvas.js";
+import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
 import SideBar from "./components/SideBar.js";
@@ -23,7 +23,7 @@ function App() {
   const canvasObj = (
     <div className="App">
       <SideBar images={imageObjects} onDragStart={handleDragStart} />
-      <ImageCanvas images={imageObjects}/>
+      <EditableArea images={imageObjects} />
     </div>
   );
 
