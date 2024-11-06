@@ -14,7 +14,7 @@
 	{"name": "hover_trolley", "filePath": "assets\\images\\hover_trolley.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "cargo", "filePath": "assets\\images\\cargo.png", "rank": 3, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "bennies", "filePath": "assets\\images\\bennies.png", "rank": 3, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
-	{"name": "people", "filePath": "assets\\images\\people.png", "rank": 3, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "people", "filePath": "assets\\images\\people.png", "rank": 4, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "argo_atls", "filePath": "assets\\images\\argo_atls.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "drake_herald", "filePath": "assets\\images\\drake_herald.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "origin_100i", "filePath": "assets\\images\\origin_100i.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0}

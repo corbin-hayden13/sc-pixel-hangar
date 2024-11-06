@@ -3,10 +3,20 @@ import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
 import SideBar from "./components/SideBar.js";
+import TopBar from "./components/TopBar.js";
 import './App.css';
 
 function App() {
   const [imageObjects, setImageObjects] = useState([]);
+  const [benniesHenge, setBenniesHenge] = useState(false);
+  const [cargo, setCargo] = useState(false);
+  const [people, setPeople] = useState(false);
+
+  const nameStatePairs = {
+    "bennies": benniesHenge,
+    "cargo": cargo,
+    "people": people,
+  };
 
   useEffect(() => {
     const images = imageData.map(
@@ -16,10 +26,34 @@ function App() {
     setImageObjects(images);
   }, []);
 
+  const onToggleOverlay = (key, newState) => {
+    const keyImageNamePairs = {
+      "Bennies Henge": "bennies",
+      "People": "people",
+      "Cargo": "cargo",
+    };
+
+    const images = imageData.map((img) => {
+      return new ImageObject(img.name, img.filePath, img.rank, {isActive: keyImageNamePairs[key] === img.name ? newState : (nameStatePairs[img.name] ? nameStatePairs[img.name] : img.isActive), inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false});
+    });
+    console.log(`Found ${images.length} images`);
+    setImageObjects(images);
+  };
+
+  const topBarArgs = {
+    onToggleOverlay,
+    benniesHenge, setBenniesHenge,
+    cargo, setCargo,
+    people, setPeople,
+  };
+
   const canvasObj = (
     <div className="App">
-      <SideBar images={imageObjects} />
-      <EditableArea images={imageObjects} />
+      <TopBar {...topBarArgs}/>
+      <div className="main-content">
+        <SideBar images={imageObjects} />
+        <EditableArea images={imageObjects} setImageObjects={setImageObjects}/>
+      </div>
     </div>
   );
 

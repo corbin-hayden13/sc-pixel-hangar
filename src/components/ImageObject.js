@@ -1,3 +1,5 @@
+import { generateUUID } from "../helper-functions.js";
+
 class ImageObject {
     constructor(name, filePath, rank, { isActive=false, inSideBar=true, opacity = 1, position = { x: 0, y: 0 }, scale = 1, rotation = 0, selectable = false } = {}) {
         this.name = name;          // Name or ID of the image, e.g., 'background' or 'character'
@@ -10,8 +12,24 @@ class ImageObject {
         this.scale = scale;        // Scale factor for resizing
         this.rotation = rotation;  // Rotation in degrees
         this.selectable = selectable;
+        this.uuid = generateUUID();
+    }
 
-        console.log(`this.isActive=${this.isActive} vs isActive=${isActive}`);
+    static copy(other) {
+        return new ImageObject(
+            other.name,
+            other.filePath,
+            other.rank,
+            {
+                isActive: other.isActive,
+                inSideBar: other.inSideBar,
+                opacity: other.opactiy,
+                position: {...other.position},
+                scale: other.scale,
+                rotation: other.rotation,
+                selectable: other.selectable,
+            }
+        );
     }
 
     // Method to update the position

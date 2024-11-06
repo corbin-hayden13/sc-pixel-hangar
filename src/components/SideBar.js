@@ -3,8 +3,9 @@ import "../css/SideBar.css"; // Styles for the sidebar and scroll container
 
 const SideBar = ({ images }) => {
   const handleDragStart = (e, image) => {
-    e.dataTransfer.setData("imageFilePath", image.filePath);
-    e.dataTransfer.setData("imageName", image.name);
+    // e.dataTransfer.setData("imageFilePath", image.filePath);
+    // e.dataTransfer.setData("imageName", image.name);
+    e.dataTransfer.setData("imageObject", JSON.stringify(image));
   };
 
   return (

@@ -1,7 +1,23 @@
 .App {
   display: flex;
+  flex-direction: column;
   height: 100vh; /* Full viewport height */
   overflow: hidden; /* Prevents overflow on small screens */
+}
+
+.TopBar {
+  width: 100%;
+  height: 50px;
+  background-color: #000000; /* Optional background color */
+  display: flex;
+  align-items: center;
+  padding: 0 16px; /* Optional padding for spacing */
+}
+
+.main-content {
+  display: flex;
+  flex: 1;
+  overflow: scroll;
 }
 
 .SideBar {

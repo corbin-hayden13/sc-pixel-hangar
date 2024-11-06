@@ -1,10 +1,11 @@
+
 import ImageCanvas from "./ImageCanvas.js";
 import "../css/EditableArea.css";
 
-function EditableArea({ images }) {
+function EditableArea({ images, setImageObjects }) {
     return (
         <div className="EditableArea">
-            <ImageCanvas images={images} />
+            <ImageCanvas images={images} setImageObjects={setImageObjects}/>
         </div>
     );
 }
