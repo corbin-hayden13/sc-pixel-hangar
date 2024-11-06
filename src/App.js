@@ -8,10 +8,6 @@ import './App.css';
 function App() {
   const [imageObjects, setImageObjects] = useState([]);
 
-  const handleDragStart = (event, image) => {
-    event.dataTransfer.setData('image', JSON.stringify(image));
-  };
-
   useEffect(() => {
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
@@ -22,7 +18,7 @@ function App() {
 
   const canvasObj = (
     <div className="App">
-      <SideBar images={imageObjects} onDragStart={handleDragStart} />
+      <SideBar images={imageObjects} />
       <EditableArea images={imageObjects} />
     </div>
   );

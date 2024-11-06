@@ -1,8 +1,11 @@
 import React from 'react';
 import "../css/SideBar.css"; // Styles for the sidebar and scroll container
 
-const SideBar = ({ images, onDragStart }) => {
-  console.log(`${images.map((imageObj) => `inSideBar=${imageObj.inSideBar} isActive=${imageObj.isActive}`)}`);
+const SideBar = ({ images }) => {
+  const handleDragStart = (e, image) => {
+    e.dataTransfer.setData("imageFilePath", image.filePath);
+    e.dataTransfer.setData("imageName", image.name);
+  };
 
   return (
     <div className="SideBar">
@@ -12,7 +15,7 @@ const SideBar = ({ images, onDragStart }) => {
             key={index}
             className="draggable-image"
             draggable
-            onDragStart={(e) => onDragStart(e, image)}
+            onDragStart={(e) => handleDragStart(e, image)}
             style={{background: "#999"}}
           >
             <img src={image.filePath} alt={image.name} className="sidebar-image" />
