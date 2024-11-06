@@ -14,7 +14,7 @@ function App() {
 
   useEffect(() => {
     const images = imageData.map(
-      img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
+      img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
     );
     console.log(`Found ${images.length} images`);
     setImageObjects(images);
