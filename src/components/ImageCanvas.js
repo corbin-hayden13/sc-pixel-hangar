@@ -3,10 +3,7 @@ import { Canvas, FabricImage } from "fabric";
 import { getImageDimensions } from "../helper-functions.js";
 import ImageObject from "./ImageObject.js";
 
-const ImageCanvas = ({ images, setImageObjects }) => {
-    const canvasRef = useRef(null);
-    const fabricCanvas = useRef(null);
-
+const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
     console.log(`Len images = ${images.length}`);
 
     useEffect(() => {
@@ -74,6 +71,7 @@ const ImageCanvas = ({ images, setImageObjects }) => {
             imageObject.isActive = true;
             imageObject.selectable = true;
             imageObject.moveable = true;
+            imageObject.inSideBar = false;
             imageObject.position = {x: newX, y: newY};
 
             setImageObjects((prevImageObjects) => [...prevImageObjects, imageObject]);

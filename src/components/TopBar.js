@@ -1,6 +1,6 @@
 import React from "react";
 
-function TopBar({ onToggleOverlay, benniesHenge, setBenniesHenge, cargo, setCargo, people, setPeople }) {
+function TopBar({ handleImageSave, onToggleOverlay, benniesHenge, setBenniesHenge, cargo, setCargo, people, setPeople }) {
 
     const toggleableOverlays = [
         {state: benniesHenge, key: "Bennies Henge"},
@@ -29,6 +29,8 @@ function TopBar({ onToggleOverlay, benniesHenge, setBenniesHenge, cargo, setCarg
 
     return (
         <div className="TopBar">
+            <button onClick={handleImageSave}>Save Pixel Hangar As...</button>
+            <button>Clear Pixel Hangar</button>
             {toggleableOverlays.map(({state, key}, index) => {
                 return (
                     <label style={{ color: "white" }} key={index}>

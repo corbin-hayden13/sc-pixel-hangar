@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
@@ -7,6 +7,9 @@ import TopBar from "./components/TopBar.js";
 import './App.css';
 
 function App() {
+  const canvasRef = useRef(null);
+  const fabricCanvas = useRef(null);
+
   const [imageObjects, setImageObjects] = useState([]);
   const [benniesHenge, setBenniesHenge] = useState(false);
   const [cargo, setCargo] = useState(false);
@@ -37,8 +40,22 @@ function App() {
     });
   };
 
+  const handleImageSave = () => {
+    if (fabricCanvas.current) {
+      const dataURL = fabricCanvas.current.toDataURL({
+        format: 'png',
+        quality: 1.0,
+      });
+
+      const link = document.createElement('a');
+      link.href = dataURL;
+      link.download = 'image_canvas.png';
+      link.click();
+    }
+  };
+
   const topBarArgs = {
-    onToggleOverlay,
+    onToggleOverlay, handleImageSave,
     benniesHenge, setBenniesHenge,
     cargo, setCargo,
     people, setPeople,
@@ -49,7 +66,7 @@ function App() {
       <TopBar {...topBarArgs}/>
       <div className="main-content">
         <SideBar images={imageObjects} />
-        <EditableArea images={imageObjects} setImageObjects={setImageObjects}/>
+        <EditableArea images={imageObjects} setImageObjects={setImageObjects} canvasRef={canvasRef} fabricCanvas={fabricCanvas}/>
       </div>
     </div>
   );
