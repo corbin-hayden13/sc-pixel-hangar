@@ -22,7 +22,6 @@ function App() {
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
     );
-    console.log(`Found ${images.length} images`);
     setImageObjects(images);
   }, []);
 
@@ -33,11 +32,9 @@ function App() {
       "Cargo": "cargo",
     };
 
-    const images = imageData.map((img) => {
-      return new ImageObject(img.name, img.filePath, img.rank, {isActive: keyImageNamePairs[key] === img.name ? newState : (nameStatePairs[img.name] ? nameStatePairs[img.name] : img.isActive), inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false});
+    setImageObjects((prevImageObjects) => {
+      return prevImageObjects.map((imgObj) => imgObj.name === keyImageNamePairs[key] ? {...imgObj, isActive: newState} : (nameStatePairs[imgObj.name]) ? {...imgObj, isActive: nameStatePairs[imgObj.name]} : imgObj);
     });
-    console.log(`Found ${images.length} images`);
-    setImageObjects(images);
   };
 
   const topBarArgs = {

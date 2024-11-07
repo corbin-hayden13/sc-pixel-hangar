@@ -7,16 +7,19 @@ const ImageCanvas = ({ images, setImageObjects }) => {
     const canvasRef = useRef(null);
     const fabricCanvas = useRef(null);
 
+    console.log(`Len images = ${images.length}`);
+
     useEffect(() => {
         fabricCanvas.current = new Canvas(canvasRef.current, { width: 1600, height: 900 });
-        console.log(`${images.map((img) => img.isActive)}`);
+
+        fabricCanvas.current.on("object:modified", handleObjectMoved);
 
         Promise.all(
             images.map((imageObj) => {
                 return FabricImage.fromURL(imageObj.filePath).then((fabricImage) => {
                     fabricImage.set({
-                        left: imageObj.position.x, // left: imageObj.position.x,
-                        top: imageObj.position.y,  // top: imageObj.position.y,
+                        left: imageObj.position.x,
+                        top: imageObj.position.y,
                         selectable: imageObj.selectable,
                         opacity: imageObj.opacity,
                         scaleX: imageObj.scale,
@@ -53,6 +56,7 @@ const ImageCanvas = ({ images, setImageObjects }) => {
         document.addEventListener("keydown", handleKeyDown);
 
         return () => {
+            fabricCanvas.current.off("object:modified", handleObjectMoved);
             fabricCanvas.current.dispose();
             document.removeEventListener("keydown", handleKeyDown);
         };
@@ -61,7 +65,6 @@ const ImageCanvas = ({ images, setImageObjects }) => {
     const handleImageDrop = async (e) => {
         e.preventDefault();
         const imageObject = ImageObject.copy(JSON.parse(e.dataTransfer.getData("imageObject")));
-        console.log(`handleImageDrop: imageObject=${imageObject.filePath}`);
 
         try {
             const { width, height } = await getImageDimensions(imageObject.filePath);
@@ -70,10 +73,10 @@ const ImageCanvas = ({ images, setImageObjects }) => {
 
             imageObject.isActive = true;
             imageObject.selectable = true;
+            imageObject.moveable = true;
             imageObject.position = {x: newX, y: newY};
 
             setImageObjects((prevImageObjects) => [...prevImageObjects, imageObject]);
-            console.log(`Adding new image to canvas at position (${newX}, ${newY})`);
         } catch (error) {
             console.log(error);
             return;
@@ -81,6 +84,25 @@ const ImageCanvas = ({ images, setImageObjects }) => {
     };
 
     const handleDragOver = (e) => e.preventDefault();
+
+    const handleObjectMoved = (e) => {
+        const movedObject = e.target;
+        console.log(`movedObject=${movedObject}`);
+    
+        if (movedObject && movedObject.uuid) {
+            const {uuid, top, left} = movedObject;
+    
+            setImageObjects((prevImageObjects) => {
+                return prevImageObjects.map((imageObj) => {
+                    if (imageObj.uuid === uuid) return {...imageObj, position: {x: left, y: top}};
+                    else return imageObj;
+                });
+            });
+        }
+        else {
+            console.log("No object was found for the object:moved event");
+        }
+    };
 
     return (
         <div

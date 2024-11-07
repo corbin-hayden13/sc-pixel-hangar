@@ -10,7 +10,6 @@ const generateUUID = () => {
 const getImageDimensions = (filePath) => {
     return new Promise((resolve, reject) => {
         const img = new Image();
-        console.log(`ImageDimensions: filePath=${filePath}`);
         img.src = filePath;
 
         img.onload = () => {
