@@ -10,10 +10,9 @@
 }
 
 .ImageCanvas {
-  flex: 1;
+  flex-shrink: 0;
   max-width: 100%; /* Allows ImageCanvas to scale with EditableArea */
   max-height: 100%;
-  display: flex;
   justify-content: center;
   align-items: center;
 }
