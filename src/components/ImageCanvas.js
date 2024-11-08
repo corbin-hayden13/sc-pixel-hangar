@@ -1,18 +1,50 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { Canvas, FabricImage } from "fabric";
 import { getImageDimensions } from "../helper-functions.js";
 import ImageObject from "./ImageObject.js";
 
 const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
-    console.log(`Len images = ${images.length}`);
+    useEffect(() => {
+        if (!fabricCanvas.current) fabricCanvas.current = new Canvas(canvasRef.current, { width: 1600, height: 900 });
+        fabricCanvas.current.on("object:modified", handleObjectMoved);
+        document.addEventListener("keydown", handleKeyDown);
+
+        return () => {
+            fabricCanvas.current.off("object:modified", handleObjectMoved);
+            fabricCanvas.current.clear();
+            document.removeEventListener("keydown", handleKeyDown);
+        };
+    }, []);
 
     useEffect(() => {
-        fabricCanvas.current = new Canvas(canvasRef.current, { width: 1600, height: 900 });
+        const canvas = fabricCanvas.current;
+        if (!canvas) return;
 
-        fabricCanvas.current.on("object:modified", handleObjectMoved);
+        const existingObjects = canvas.getObjects().reduce((acc, obj) => {
+            if (obj.uuid) acc[obj.uuid] = obj;
+            return acc;
+        }, {});
 
-        Promise.all(
-            images.map((imageObj) => {
+        // Create promises for images, loading only new ones
+        const imagePromises = images.map((imageObj) => {
+            const existingImage = existingObjects[imageObj.uuid];
+
+            // If image already exists, update its position if needed
+            if (existingImage) {
+                if (
+                    existingImage.left !== imageObj.position.x ||
+                    existingImage.top !== imageObj.position.y
+                ) {
+                    existingImage.set({
+                        left: imageObj.position.x,
+                        top: imageObj.position.y,
+                    });
+                    existingImage.setCoords();
+                }
+                // Return a resolved promise for existing images to keep Promise.all consistent
+                return Promise.resolve();
+            } else {
+                // For new images, load and add them to the canvas
                 return FabricImage.fromURL(imageObj.filePath).then((fabricImage) => {
                     fabricImage.set({
                         left: imageObj.position.x,
@@ -24,39 +56,24 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
                         angle: imageObj.angle,
                     });
                     fabricImage.uuid = imageObj.uuid;
-
-                    return { fabricImage, rank: imageObj.rank, isActive: imageObj.isActive }
+                    return { fabricImage, rank: imageObj.rank, isActive: imageObj.isActive };
                 });
-            })
-        ).then((loadedImages) => {
-            loadedImages.sort((a, b) => a.rank - b.rank).forEach(({ fabricImage, isActive }) => {
-                if (isActive) fabricCanvas.current.add(fabricImage);
-            });
-            fabricCanvas.current.renderAll();
+            }
         });
 
-        const handleKeyDown = (e) => {
-            if (e.key === "Delete" || e.key === "Backspace") {
-                const activeObject = fabricCanvas.current.getActiveObject();
-                if (activeObject) {
-                    fabricCanvas.current.remove(activeObject);
-                    fabricCanvas.current.renderAll();
+        // Wait for new images to load, then render them in sorted order by rank
+        Promise.all(imagePromises).then((loadedImages) => {
+            // Filter out undefined entries from existing images (from resolved promises)
+            loadedImages
+                .filter((item) => item) // Only keep newly loaded images
+                .sort((a, b) => a.rank - b.rank)
+                .forEach(({ fabricImage, isActive }) => {
+                    if (isActive) canvas.add(fabricImage);
+                });
 
-                    setImageObjects(images.filter(img => img.uuid !== activeObject.uuid));
-                }
-                else {
-                    console.log("No active object found");
-                }
-            }
-        };
-
-        document.addEventListener("keydown", handleKeyDown);
-
-        return () => {
-            fabricCanvas.current.off("object:modified", handleObjectMoved);
-            fabricCanvas.current.dispose();
-            document.removeEventListener("keydown", handleKeyDown);
-        };
+            canvas.renderAll();
+            console.log(`There are now ${canvas.getObjects().length} objects on the canvas`);
+        });
     }, [images]);
 
     const handleImageDrop = async (e) => {
@@ -85,10 +102,10 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
 
     const handleObjectMoved = (e) => {
         const movedObject = e.target;
-        console.log(`movedObject=${movedObject}`);
     
         if (movedObject && movedObject.uuid) {
             const {uuid, top, left} = movedObject;
+            console.log(`Object ${movedObject.uuid} moved!`);
     
             setImageObjects((prevImageObjects) => {
                 return prevImageObjects.map((imageObj) => {
@@ -99,6 +116,22 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
         }
         else {
             console.log("No object was found for the object:moved event");
+        }
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === "Delete" || e.key === "Backspace") {
+            const activeObject = fabricCanvas.current.getActiveObject();
+            if (activeObject) {
+                const oldUUID = activeObject.uuid;
+                fabricCanvas.current.remove(activeObject);
+                // fabricCanvas.current.renderAll();
+
+                setImageObjects((prevImageObjects) => prevImageObjects.filter(img => img.uuid !== oldUUID));
+            }
+            else {
+                console.log("No active object found");
+            }
         }
     };
 

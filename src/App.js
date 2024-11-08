@@ -21,6 +21,14 @@ function App() {
     "people": people,
   };
 
+  const keyImageNamePairs = {
+    "Bennies Henge": "bennies",
+    "People": "people",
+    "Cargo": "cargo",
+  };
+
+  /// const backgroundImageNames = ["selfland", "hangar_floor1"];
+
   useEffect(() => {
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
@@ -29,12 +37,6 @@ function App() {
   }, []);
 
   const onToggleOverlay = (key, newState) => {
-    const keyImageNamePairs = {
-      "Bennies Henge": "bennies",
-      "People": "people",
-      "Cargo": "cargo",
-    };
-
     setImageObjects((prevImageObjects) => {
       return prevImageObjects.map((imgObj) => imgObj.name === keyImageNamePairs[key] ? {...imgObj, isActive: newState} : (nameStatePairs[imgObj.name]) ? {...imgObj, isActive: nameStatePairs[imgObj.name]} : imgObj);
     });
