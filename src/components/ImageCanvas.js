@@ -25,6 +25,11 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
             return acc;
         }, {});
 
+        canvas.getObjects().forEach((canvasObj) => {
+            const correspondingImage = images.find((img) => img.uuid === canvasObj.uuid);
+            if (correspondingImage && !correspondingImage.isActive) canvas.remove(canvasObj);
+        });
+
         // Create promises for images, loading only new ones
         const imagePromises = images.map((imageObj) => {
             const existingImage = existingObjects[imageObj.uuid];
@@ -125,7 +130,6 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
             if (activeObject) {
                 const oldUUID = activeObject.uuid;
                 fabricCanvas.current.remove(activeObject);
-                // fabricCanvas.current.renderAll();
 
                 setImageObjects((prevImageObjects) => prevImageObjects.filter(img => img.uuid !== oldUUID));
             }
