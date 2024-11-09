@@ -29,12 +29,26 @@ function App() {
 
   /// const backgroundImageNames = ["selfland", "hangar_floor1"];
 
-  useEffect(() => {
+  const makeDefaultHangar = () => {
+    fabricCanvas.current.getObjects().forEach((imgObj) => fabricCanvas.current.remove(imgObj));
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
     );
     setImageObjects(images);
+  }
+
+  useEffect(() => {
+    const savedHangarState = JSON.parse(localStorage.getItem("hangarState"));
+    console.log(localStorage.getItem("hangarState"));
+    if (savedHangarState.length > 0) {
+      setImageObjects(savedHangarState);
+    }
+    else makeDefaultHangar();
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("hangarState", JSON.stringify(imageObjects));
+  }, [imageObjects]);
 
   const onToggleOverlay = (key, newState) => {
     setImageObjects((prevImageObjects) => {
@@ -61,14 +75,21 @@ function App() {
     benniesHenge, setBenniesHenge,
     cargo, setCargo,
     people, setPeople,
+    clearHangar: makeDefaultHangar
   };
+
+  const editableAreaArgs = {
+    setImageObjects,
+    images: imageObjects,
+    canvasRef, fabricCanvas
+  }
 
   const canvasObj = (
     <div className="App">
       <TopBar {...topBarArgs}/>
       <div className="main-content">
         <SideBar images={imageObjects} />
-        <EditableArea images={imageObjects} setImageObjects={setImageObjects} canvasRef={canvasRef} fabricCanvas={fabricCanvas}/>
+        <EditableArea {...editableAreaArgs}/>
       </div>
     </div>
   );
