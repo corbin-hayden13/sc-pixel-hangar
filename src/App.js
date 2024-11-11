@@ -10,6 +10,8 @@ function App() {
   const canvasRef = useRef(null);
   const fabricCanvas = useRef(null);
 
+  const appInitialized = useRef(false);
+
   const [imageObjects, setImageObjects] = useState([]);
   const [benniesHenge, setBenniesHenge] = useState(false);
   const [cargo, setCargo] = useState(false);
@@ -39,12 +41,16 @@ function App() {
   }
 
   useEffect(() => {
+    if (appInitialized.current) return;
+
     const savedHangarState = JSON.parse(localStorage.getItem("hangarState"));
-    console.log(localStorage.getItem("hangarState"));
-    if (savedHangarState.length > 0) {
+    console.log(`Previous Hangar State = ${localStorage.getItem("hangarState")}`);
+    if (savedHangarState && savedHangarState.length > 0) {
       setImageObjects(savedHangarState);
     }
     else makeDefaultHangar();
+
+    appInitialized.current = true;
   }, []);
 
   useEffect(() => {
