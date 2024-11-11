@@ -137,15 +137,22 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
 
     const handleKeyDown = (e) => {
         if (e.key === "Delete" || e.key === "Backspace") {
-            const activeObject = fabricCanvas.current.getActiveObject();
-            if (activeObject) {
-                const oldUUID = activeObject.uuid;
-                fabricCanvas.current.remove(activeObject);
+            const activeObjects = fabricCanvas.current.getActiveObjects();
+            if (activeObjects && activeObjects.length > 0) {
+                let oldUUIDs = [];
+                activeObjects.forEach((canvasObj) => {
+                    oldUUIDs.push(canvasObj.uuid);
+                    fabricCanvas.current.remove(canvasObj);
+                });
 
-                setImageObjects((prevImageObjects) => prevImageObjects.filter(img => img.uuid !== oldUUID));
+                setImageObjects((prevImageObjects) => {
+                    return prevImageObjects.filter((imgObj) => !oldUUIDs.includes(imgObj.uuid));
+                });
+
+                fabricCanvas.current.discardActiveObject();
             }
             else {
-                console.log("No active object found");
+                console.log("No active objects found.");
             }
         }
     };
