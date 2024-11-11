@@ -25,9 +25,23 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
             return acc;
         }, {});
 
+        console.log(canvas.getObjects().map((imgObj) => imgObj.name).join(", "));
+
         canvas.getObjects().forEach((canvasObj) => {
             const correspondingImage = images.find((img) => img.uuid === canvasObj.uuid);
-            if (correspondingImage && !correspondingImage.isActive) canvas.remove(canvasObj);
+            if (correspondingImage && !correspondingImage.isActive) {
+                canvasObj.opacity = 0;
+            }
+            if (correspondingImage) {
+                if (correspondingImage.isActive) {
+                    correspondingImage.opacity = 1;
+                    canvasObj.opacity = 1;
+                }
+                else {
+                    correspondingImage.opactiy = 0;
+                    canvasObj.opacity = 0;
+                }
+            }
         });
 
         // Create promises for images, loading only new ones
@@ -55,13 +69,14 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
                         left: imageObj.position.x,
                         top: imageObj.position.y,
                         selectable: imageObj.selectable,
-                        opacity: imageObj.opacity,
+                        opacity: imageObj.isActive ? 1 : 0,
                         scaleX: imageObj.scale,
                         scaleY: imageObj.scale,
                         angle: imageObj.angle,
                     });
                     fabricImage.uuid = imageObj.uuid;
-                    return { fabricImage, rank: imageObj.rank, isActive: imageObj.isActive };
+                    fabricImage.name = imageObj.name;
+                    return { fabricImage, rank: imageObj.rank };
                 });
             }
         });
@@ -72,12 +87,9 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
             loadedImages
                 .filter((item) => item) // Only keep newly loaded images
                 .sort((a, b) => a.rank - b.rank)
-                .forEach(({ fabricImage, isActive }) => {
-                    if (isActive) canvas.add(fabricImage);
-                });
+                .forEach(({ fabricImage }) => { canvas.add(fabricImage); });
 
             canvas.renderAll();
-            console.log(`There are now ${canvas.getObjects().length} objects on the canvas`);
         });
     }, [images]);
 
@@ -110,7 +122,6 @@ const ImageCanvas = ({ images, setImageObjects, canvasRef, fabricCanvas }) => {
     
         if (movedObject && movedObject.uuid) {
             const {uuid, top, left} = movedObject;
-            console.log(`Object ${movedObject.uuid} moved!`);
     
             setImageObjects((prevImageObjects) => {
                 return prevImageObjects.map((imageObj) => {
