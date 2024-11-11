@@ -10,6 +10,8 @@ function App() {
   const canvasRef = useRef(null);
   const fabricCanvas = useRef(null);
 
+  const appInitialized = useRef(false);
+
   const [imageObjects, setImageObjects] = useState([]);
   const [benniesHenge, setBenniesHenge] = useState(false);
   const [cargo, setCargo] = useState(false);
@@ -27,14 +29,33 @@ function App() {
     "Cargo": "cargo",
   };
 
-  /// const backgroundImageNames = ["selfland", "hangar_floor1"];
-
-  useEffect(() => {
+  const makeDefaultHangar = () => {
+    fabricCanvas.current.getObjects().forEach((imgObj) => fabricCanvas.current.remove(imgObj));
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
-    );
+    ).filter((imgObj) => !imgObj.inSideBar);
+    setBenniesHenge(false);
+    setCargo(false);
+    setPeople(false);
     setImageObjects(images);
+  }
+
+  useEffect(() => {
+    if (appInitialized.current) return;
+
+    const savedHangarState = JSON.parse(localStorage.getItem("hangarState"));
+    console.log(`Previous Hangar State = ${localStorage.getItem("hangarState")}`);
+    if (savedHangarState && savedHangarState.length > 0) {
+      setImageObjects(savedHangarState);
+    }
+    else makeDefaultHangar();
+
+    appInitialized.current = true;
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("hangarState", JSON.stringify(imageObjects));
+  }, [imageObjects]);
 
   const onToggleOverlay = (key, newState) => {
     setImageObjects((prevImageObjects) => {
@@ -61,14 +82,25 @@ function App() {
     benniesHenge, setBenniesHenge,
     cargo, setCargo,
     people, setPeople,
+    clearHangar: makeDefaultHangar
   };
+
+  const editableAreaArgs = {
+    setImageObjects,
+    images: imageObjects,
+    canvasRef, fabricCanvas
+  }
 
   const canvasObj = (
     <div className="App">
       <TopBar {...topBarArgs}/>
       <div className="main-content">
-        <SideBar images={imageObjects} />
-        <EditableArea images={imageObjects} setImageObjects={setImageObjects} canvasRef={canvasRef} fabricCanvas={fabricCanvas}/>
+        <SideBar images={
+          imageData.map(
+            img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
+          ).filter((imgObj) => imgObj.inSideBar)
+        } />
+        <EditableArea {...editableAreaArgs}/>
       </div>
     </div>
   );

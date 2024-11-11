@@ -19,5 +19,6 @@
 	{"name": "drake_herald", "filePath": "assets\\images\\drake_herald.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "origin_100i", "filePath": "assets\\images\\origin_100i.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
 	{"name": "mirai_fury_lx", "filePath": "assets\\images\\mirai_fury_lx.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
-	{"name": "misc_freelancer", "filePath": "assets\\images\\misc_freelancer.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0}
+	{"name": "misc_freelancer", "filePath": "assets\\images\\misc_freelancer.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0},
+	{"name": "misc_freelancer_max", "filePath": "assets\\images\\misc_freelancer_max.png", "rank": 99, "position": {"x": 0, "y": 0}, "isActive": false, "inSideBar": true, "selectable": false, "opacity": 1, "scale": 1, "angle": 0}
 ]
