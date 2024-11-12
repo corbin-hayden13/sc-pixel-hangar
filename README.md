@@ -11,9 +11,10 @@ Full credit for the art and assets goes to Blamsmith, I'm just responsible for t
 I will be tracking features and updates using issues. Core feature issues will be given first priority, quality of life (qol) issues will be addressed afterwards
 
 ### Showcase
-11/07/2024
 
-https://github.com/user-attachments/assets/4c949379-2381-488c-a3c5-600e6597b12c
+11/12/2024
+
+https://github.com/user-attachments/assets/c30864eb-c7d6-44b0-8416-d1f1e517a3cd
 
 #### Build Information
 
