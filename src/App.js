@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { addMetadataFromBase64DataURI } from "meta-png";
 import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
@@ -69,11 +70,33 @@ function App() {
         format: 'png',
         quality: 1.0,
       });
+      const metadata = JSON.stringify(imageObjects);
 
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = 'image_canvas.png';
-      link.click();
+      try {
+        // Add metadata to the base64 data URL
+        const pngWithMetadata = addMetadataFromBase64DataURI(dataURL, "imageObjects", metadata);
+        
+        // Strip off the data URI prefix to get only the base64-encoded string
+        const base64Data = pngWithMetadata.replace(/^data:image\/png;base64,/, '');
+        
+        // Decode base64 string to binary data
+        const binaryString = window.atob(base64Data);
+        const binaryLength = binaryString.length;
+        const bytes = new Uint8Array(binaryLength);
+        
+        for (let i = 0; i < binaryLength; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+      
+        // Create a Blob from the binary data
+        const blob = new Blob([bytes], { type: 'image/png' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'image_canvas.png';
+        link.click();
+      } catch (e) {
+        console.error(`App.js: Error adding metadata to PNG ${e}`);
+      }
     }
   };
 
