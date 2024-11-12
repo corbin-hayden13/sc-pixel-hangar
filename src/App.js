@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { addMetadataFromBase64DataURI, getMetadata } from "meta-png";
 import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
@@ -17,10 +18,18 @@ function App() {
   const [cargo, setCargo] = useState(false);
   const [people, setPeople] = useState(false);
 
+  const metadataKey = "imageObjects";
+
   const nameStatePairs = {
     "bennies": benniesHenge,
     "cargo": cargo,
     "people": people,
+  };
+
+  const nameSetStatePairs = {
+    "bennies": setBenniesHenge,
+    "cargo": setCargo,
+    "people": setPeople,
   };
 
   const keyImageNamePairs = {
@@ -30,6 +39,7 @@ function App() {
   };
 
   const makeDefaultHangar = () => {
+    console.log("Making default hangar...");
     fabricCanvas.current.getObjects().forEach((imgObj) => fabricCanvas.current.remove(imgObj));
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
@@ -69,16 +79,59 @@ function App() {
         format: 'png',
         quality: 1.0,
       });
+      const metadata = JSON.stringify(imageObjects);
 
-      const link = document.createElement('a');
-      link.href = dataURL;
-      link.download = 'image_canvas.png';
-      link.click();
+      try {
+        // Add metadata to the base64 data URL
+        const pngWithMetadata = addMetadataFromBase64DataURI(dataURL, metadataKey, metadata);
+        
+        // Strip off the data URI prefix to get only the base64-encoded string
+        const base64Data = pngWithMetadata.replace(/^data:image\/png;base64,/, '');
+        
+        // Decode base64 string to binary data
+        const binaryString = window.atob(base64Data);
+        const binaryLength = binaryString.length;
+        const bytes = new Uint8Array(binaryLength);
+        
+        for (let i = 0; i < binaryLength; i++) {
+          bytes[i] = binaryString.charCodeAt(i);
+        }
+      
+        // Create a Blob from the binary data
+        const blob = new Blob([bytes], { type: 'image/png' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'image_canvas.png';
+        link.click();
+      } catch (e) {
+        console.error(`App.js: Error adding metadata to PNG ${e}`);
+      }
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageObjectsMetadata = getMetadata(new Uint8Array(await file.arrayBuffer()), metadataKey);
+      const metadataObj = JSON.parse(imageObjectsMetadata);
+      if (metadataObj) {
+        makeDefaultHangar();
+        metadataObj.forEach((imgObj) => {
+          if (Object.keys(nameSetStatePairs).includes(imgObj.name)) {
+            nameSetStatePairs[imgObj.name](imgObj.isActive);
+          }
+        });
+        setImageObjects(metadataObj);
+
+        e.target.value = null;
+      }
+      else console.error(`Error parsing metadata: ${imageObjectsMetadata}`);
+    }
+    else console.error("No file found for image upload...");
+  }
+
   const topBarArgs = {
-    onToggleOverlay, handleImageSave,
+    onToggleOverlay, handleImageSave, handleImageUpload,
     benniesHenge, setBenniesHenge,
     cargo, setCargo,
     people, setPeople,

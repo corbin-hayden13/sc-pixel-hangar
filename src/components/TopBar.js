@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useRef } from "react";
 
-function TopBar({ clearHangar, handleImageSave, onToggleOverlay, benniesHenge, setBenniesHenge, cargo, setCargo, people, setPeople }) {
+function TopBar({ clearHangar, handleImageSave, handleImageUpload, onToggleOverlay, benniesHenge, setBenniesHenge, cargo, setCargo, people, setPeople }) {
+    const fileInputRef = useRef(null);
+
+    const handleOpenFileViewer = () => {
+        fileInputRef.current.click();
+    };
 
     const toggleableOverlays = [
         {state: benniesHenge, key: "Bennies Henge"},
@@ -29,9 +34,21 @@ function TopBar({ clearHangar, handleImageSave, onToggleOverlay, benniesHenge, s
 
     return (
         <div className="TopBar">
-            <button onClick={handleImageSave}>Save Pixel Hangar As...</button>
-            <button onClick={clearHangar}>Clear Pixel Hangar</button>
-            <button onClick={() => { localStorage.setItem("hangarState", "[]") }}>Clear Hangar Cache</button>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <button onClick={handleImageSave}>Save Pixel Hangar As...</button>
+                <button onClick={clearHangar}>Clear Pixel Hangar</button>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column" }}>
+                <button onClick={handleOpenFileViewer}>Upload Image...</button>
+                <input
+                    type="file"
+                    accept = ".png"
+                    ref={fileInputRef}
+                    style={{display: "none"}}
+                    onChange={handleImageUpload}
+                />
+                <button onClick={() => { localStorage.setItem("hangarState", "[]") }}>Clear Hangar Cache</button>
+            </div>
             {toggleableOverlays.map(({state, key}, index) => {
                 return (
                     <label style={{ color: "white" }} key={index}>
