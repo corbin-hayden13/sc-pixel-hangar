@@ -26,6 +26,12 @@ function App() {
     "people": people,
   };
 
+  const nameSetStatePairs = {
+    "bennies": setBenniesHenge,
+    "cargo": setCargo,
+    "people": setPeople,
+  };
+
   const keyImageNamePairs = {
     "Bennies Henge": "bennies",
     "People": "people",
@@ -33,6 +39,7 @@ function App() {
   };
 
   const makeDefaultHangar = () => {
+    console.log("Making default hangar...");
     fabricCanvas.current.getObjects().forEach((imgObj) => fabricCanvas.current.remove(imgObj));
     const images = imageData.map(
       img => new ImageObject(img.name, img.filePath, img.rank, {isActive: img.isActive, inSideBar: img.inSideBar, opacity: img.opacity, position: img.position, scale: img.scale, rotation: img.rotation, selectable: false})
@@ -108,7 +115,15 @@ function App() {
       const imageObjectsMetadata = getMetadata(new Uint8Array(await file.arrayBuffer()), metadataKey);
       const metadataObj = JSON.parse(imageObjectsMetadata);
       if (metadataObj) {
+        makeDefaultHangar();
+        metadataObj.forEach((imgObj) => {
+          if (Object.keys(nameSetStatePairs).includes(imgObj.name)) {
+            nameSetStatePairs[imgObj.name](imgObj.isActive);
+          }
+        });
         setImageObjects(metadataObj);
+
+        e.target.value = null;
       }
       else console.error(`Error parsing metadata: ${imageObjectsMetadata}`);
     }
