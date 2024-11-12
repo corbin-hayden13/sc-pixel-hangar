@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { addMetadataFromBase64DataURI } from "meta-png";
+import { addMetadataFromBase64DataURI, getMetadata } from "meta-png";
 import EditableArea from "./components/EditableArea.js";
 import ImageObject from "./components/ImageObject.js";
 import imageData from "./data/image_objects.json";
@@ -17,6 +17,8 @@ function App() {
   const [benniesHenge, setBenniesHenge] = useState(false);
   const [cargo, setCargo] = useState(false);
   const [people, setPeople] = useState(false);
+
+  const metadataKey = "imageObjects";
 
   const nameStatePairs = {
     "bennies": benniesHenge,
@@ -74,7 +76,7 @@ function App() {
 
       try {
         // Add metadata to the base64 data URL
-        const pngWithMetadata = addMetadataFromBase64DataURI(dataURL, "imageObjects", metadata);
+        const pngWithMetadata = addMetadataFromBase64DataURI(dataURL, metadataKey, metadata);
         
         // Strip off the data URI prefix to get only the base64-encoded string
         const base64Data = pngWithMetadata.replace(/^data:image\/png;base64,/, '');
@@ -100,8 +102,21 @@ function App() {
     }
   };
 
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const imageObjectsMetadata = getMetadata(new Uint8Array(await file.arrayBuffer()), metadataKey);
+      const metadataObj = JSON.parse(imageObjectsMetadata);
+      if (metadataObj) {
+        setImageObjects(metadataObj);
+      }
+      else console.error(`Error parsing metadata: ${imageObjectsMetadata}`);
+    }
+    else console.error("No file found for image upload...");
+  }
+
   const topBarArgs = {
-    onToggleOverlay, handleImageSave,
+    onToggleOverlay, handleImageSave, handleImageUpload,
     benniesHenge, setBenniesHenge,
     cargo, setCargo,
     people, setPeople,
